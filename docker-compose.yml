@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    backend:
+        container_name: backend
+        build: ./backend
+        volumes: 
+            - ./backend:/usr/src/app
+            - node_modules:/usr/src/app/node_modules
+        ports:
+            - 80:3000
+        depends_on: 
+            - db
+        networks: 
+            - net
+        stdin_open: true
+        tty: true
+    
+    db:
+        container_name: database
+        build: .
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        environment: 
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=database_name
+        networks:
+            - net
+
+volumes:
+    node_modules:
+    postgres_data:
+
+networks:
+    net:
